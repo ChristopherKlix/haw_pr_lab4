@@ -104,20 +104,8 @@ bool check_for_tie(BOARD);
 // -1 -> 'O'
 char player_to_char(int);
 
-
-
-
+// Simple helper function to
+// retrieve an int from the player
 int get_int(char*);
-
-
-
-
-
-
-
-
-
-
-
 
 #endif

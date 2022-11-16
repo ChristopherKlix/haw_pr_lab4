@@ -12,7 +12,7 @@ void play(void)
 
     bool game_is_running = false;
 
-    PLAYER currant_player = PLAYER_USER;
+    PLAYER current_player = PLAYER_USER;
     PLAYER winner = NOPLAYER;
     BOARD board;
 
@@ -31,7 +31,7 @@ void play(void)
         draw_board(board);
 
         //get next move
-        MOVE move = get_next_move(currant_player, board);
+        MOVE move = get_next_move(current_player, board);
 
         //make next move
         make_move(move, board);
@@ -54,7 +54,7 @@ void play(void)
         }
 
         //toggle player
-        currant_player = (currant_player == PLAYER_USER) ? PLAYER_COMP : PLAYER_USER;
+        current_player = (current_player == PLAYER_USER) ? PLAYER_COMP : PLAYER_USER;
 
     } while (game_is_running);
 
@@ -104,58 +104,19 @@ MOVE get_user_move(void)
     return move;
 }
 
-char player_to_char(int player)
-{
-    switch (player)
-    {
-        case PLAYER_USER: return 'X';
-        case PLAYER_COMP: return 'O';
-        default: return ' ';
-    }
-
-}
-
-
-
-
-
-int get_int(char* text)
-{
-    int x;
-    int retval;
-    char ch;
-    bool finished = false;
-
-
-    do
-    {
-        ch = '\0';
-        printf("\nEnter %s: ", text);
-        retval = scanf("%d%c", &x, &ch);
-        x -= 1;
-
-        if (retval != 2) printf("Not a correct number");
-        else if (ch != '\n') printf("Not a correct number");
-        else if (x < 0) printf("Number too small");
-        else if (x > 2) printf("Number too large");
-        else finished = true;
-
-        while (ch != '\n') scanf("%c", &ch);
-
-    } while (!finished);
-
-    return x;
-}
-
-
 MOVE get_comp_move(void)
 {
     MOVE move;
     move.player = PLAYER_COMP;
-    move.col = rand() % 3;
-    move.lin = rand() % 3;
+    move.col = rand() % BOARD_COLUMNS;
+    move.lin = rand() % BOARD_LINES;
 
     return move;
+}
+
+bool move_is_valid(MOVE move, BOARD board)
+{
+    return (board[move.col][move.lin] == NOPLAYER);
 }
 
 void make_move(MOVE move, BOARD board)
@@ -165,16 +126,11 @@ void make_move(MOVE move, BOARD board)
     return;
 }
 
-bool move_is_valid(MOVE move, BOARD board)
-{
-    return (board[move.col][move.lin] == NOPLAYER);
-}
-
 PLAYER check_for_win(BOARD board)
 {
     int sum;
 
-    //check 3 in a columns
+    // check for 3 in a column
     for (int col = 0; col < BOARD_COLUMNS; col++)
     {
         sum = 0;
@@ -187,7 +143,7 @@ PLAYER check_for_win(BOARD board)
         if (sum == -3) return PLAYER_COMP;
     }
 
-    //check 3 in lines
+    // check for 3 in a line
     for (int lin = 0; lin < BOARD_COLUMNS; lin++)
     {
         sum = 0;
@@ -200,7 +156,7 @@ PLAYER check_for_win(BOARD board)
         if (sum == -3) return PLAYER_COMP;
     }
 
-    //check 3 in diag.
+    // check for 3 in -45 degree diagonal
     sum = 0;
     for (int i = 0; i < BOARD_COLUMNS; i++)
     {
@@ -210,6 +166,7 @@ PLAYER check_for_win(BOARD board)
     if (sum == 3) return PLAYER_USER;
     if (sum == -3) return PLAYER_COMP;
 
+    // check for 3 in 45 degree diagonal
     sum = 0;
     for (int i = 0; i < BOARD_COLUMNS; i++)
     {
@@ -239,5 +196,44 @@ bool check_for_tie(BOARD board)
         }
     }
 
-    return (sum==9);
+    return (sum == 9);
+}
+
+char player_to_char(int player)
+{
+    switch (player)
+    {
+        case PLAYER_USER: return 'X';
+        case PLAYER_COMP: return 'O';
+        default: return ' ';
+    }
+
+}
+
+int get_int(char* text)
+{
+    int x;
+    int retval;
+    char ch;
+    bool finished = false;
+
+
+    do
+    {
+        ch = '\0';
+        printf("\nEnter %s: ", text);
+        retval = scanf("%d%c", &x, &ch);
+        x -= 1;
+
+        if (retval != 2) printf("Not a correct number");
+        else if (ch != '\n') printf("Not a correct number");
+        else if (x < 0) printf("Number too small");
+        else if (x > 2) printf("Number too large");
+        else finished = true;
+
+        while (ch != '\n') scanf("%c", &ch);
+
+    } while (!finished);
+
+    return x;
 }
