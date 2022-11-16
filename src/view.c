@@ -6,44 +6,44 @@
 
 void draw_board(BOARD board)
 {
-	clear_screen();
+    clear_screen();
 
-	printf("    C1  C2  C3\n");
-	for (int lin = 0; lin < BOARD_LINES; lin++)
-	{
-		printf(" L%d ", lin + 1);
+    printf("    C1  C2  C3\n");
+    for (int lin = 0; lin < BOARD_LINES; lin++)
+    {
+        printf(" L%d ", lin + 1);
 
-		for (int col = 0; col < BOARD_COLUMNS; col++)
-		{
+        for (int col = 0; col < BOARD_COLUMNS; col++)
+        {
 
-			printf(" %c ", player_to_char(board[col][lin]));
+            printf(" %c ", player_to_char(board[col][lin]));
 
-			if (col < 2) printf("|");
+            if (col < 2) printf("|");
 
-		}
+        }
 
         printf("\n");
 
-		if (lin < 2) printf("    ---|---|---\n");
-	}
+        if (lin < 2) printf("    ---|---|---\n");
+    }
 
-	return;
+    return;
 }
 
 void clear_screen(void)
 {
 #ifdef WIN32
-	system("cls");
+    system("cls");
 #else
-	system("clear");
+    system("clear");
 #endif
 }
 
-void draw_endscreen(PLAYER player) 
+void draw_endscreen(PLAYER player)
 {
-	if (!player) printf("\n\n   TIE\n");
-	else if (player == PLAYER_USER) printf("\n\n   YOU HAVE WON\n");
-	else if (player == PLAYER_COMP) printf("\n\n   YOU HAVE LOST\n");
+    if (!player) printf("\n\n   TIE\n");
+    else if (player == PLAYER_USER) printf("\n\n   YOU HAVE WON\n");
+    else if (player == PLAYER_COMP) printf("\n\n   YOU HAVE LOST\n");
 
-	return;
+    return;
 }
