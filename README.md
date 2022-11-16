@@ -20,8 +20,8 @@ int main(void)
 
 ## game.c & game.h
 
-The games main logic is contained in these two files.
-Once the `play()` function is invoked the main event loop is started. This loop continues until `game_is_running` is set to false by checking end condition of the game.
+The game's main logic is contained in these two files.
+Once the `play()` function is invoked the main event loop is started. This loop continues until `game_is_running` is set to false by checking end conditions of the game.
 
 Once the while-loop has been exited the `play()` function invokes `void draw_endscreen(PLAYER winner)` and returns to the caller function.
 
