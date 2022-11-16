@@ -8,7 +8,7 @@
 
 int main(void)
 {
-	play(); 
-	
-	return 0; 
+    play();
+
+    return 0;
 }
