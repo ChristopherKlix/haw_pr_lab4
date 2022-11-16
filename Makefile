@@ -2,14 +2,14 @@ main: main.o game.o view.o
 	cc main.o game.o view.o -o tictactoe
 	make clean
 
-main.o: main.c
-	cc -c main.c
+main.o: ./src/main.c
+	cc -c ./src/main.c
 
-game.o: game.c game.h
-	cc -c game.c
+game.o: ./src/game.c ./src/game.h
+	cc -c ./src/game.c
 
-view.o: view.c view.h
-	cc -c view.c
+view.o: ./src/view.c ./src/view.h
+	cc -c ./src/view.c
 
 clean:
 	rm *.o
