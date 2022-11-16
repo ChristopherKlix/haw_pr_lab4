@@ -35,33 +35,32 @@ void play(void)
     {
         game_is_running = true;
 
-        //draw current board
+        // draw current board
         draw_board(board);
 
-        //get next move
+        // get next move
         MOVE move = get_next_move(current_player, board);
 
-        //make next move
+        // make next move
         make_move(move, board);
 
-        //draw updated board
+        // draw updated board
         draw_board(board);
 
-        //check for winner
+        // check for winner
         winner = check_for_win(board);
         if (winner)
         {
-
             game_is_running = false;
         }
 
-        //check for tie
+        // check for tie
         if (check_for_tie(board))
         {
             game_is_running = false;
         }
 
-        //toggle player
+        // toggle player
         current_player = (current_player == PLAYER_USER) ? PLAYER_COMP : PLAYER_USER;
 
     } while (game_is_running);
