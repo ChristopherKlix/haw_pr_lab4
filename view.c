@@ -4,7 +4,7 @@
 #include "view.h"
 #include "game.h"
 
-void print_board(int** board)
+void draw_board(BOARD board)
 {
 	clear_screen();
 
@@ -22,11 +22,12 @@ void print_board(int** board)
 
 		}
 
-		if (lin < 2) printf("\n    ---|---|---\n");
+        printf("\n");
+
+		if (lin < 2) printf("    ---|---|---\n");
 	}
 
 	return;
-
 }
 
 void clear_screen(void)
@@ -45,5 +46,4 @@ void draw_endscreen(PLAYER player)
 	else if (player == PLAYER_COMP) printf("\n\n   YOU HAVE LOST\n");
 
 	return;
-
 }

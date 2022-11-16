@@ -83,6 +83,29 @@ bool move_is_valid(MOVE, BOARD);
 void make_move(MOVE, BOARD);
 
 
+// 
+// Game state evaluation function
+// 
+
+// Evaluation function to check for a win
+// at the current board state
+PLAYER check_for_win(BOARD); 
+
+// Evaluation function to check for a tie
+// at the current board state
+bool check_for_tie(BOARD); 
+
+
+// Simple conversion function to
+// convert int representing player
+// to player char
+// 0 -> 'n'
+// 1 -> 'X'
+// -1 -> 'O' 
+char player_to_char(int);
+
+
+
 
 int get_int(char*);
 
@@ -93,14 +116,8 @@ int get_int(char*);
 
 
 
-PLAYER check_for_win(BOARD); 
 
-bool check_for_tie(BOARD); 
 
-// convert int representing player to char player char
-// 0 -> 'n'
-// 1 -> 'X'
-// -1 -> 'O' 
-char player_to_char(int);
+
 
 #endif
