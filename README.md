@@ -39,7 +39,7 @@ void play(void)
         draw_board(board);
 
         //get next move
-        MOVE move = get_next_move(currant_player, board);
+        MOVE move = get_next_move(current_player, board);
 
         //make next move
         make_move(move, board);
