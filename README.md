@@ -2,7 +2,9 @@
 
 Solution to HAW PR Lab 4
 
-## main.c
+## simple version
+
+### main.c
 
 Keeping it short and simple.
 The main function simply invokes the game's initial call function `play()`.
@@ -18,7 +20,7 @@ int main(void)
 }
 ```
 
-## game.c & game.h
+### game.c & game.h
 
 The game's main logic is contained in these two files.
 Once the `play()` function is invoked the main event loop is started. This loop continues until `game_is_running` is set to false by checking end conditions of the game.
