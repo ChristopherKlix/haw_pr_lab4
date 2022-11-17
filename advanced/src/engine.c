@@ -546,6 +546,8 @@ int start_game(GAME_SETUP *game_setup, GAME_STATE *game_state)
     return 0;
 }
 
+
+
 MOVE get_next_move(GAME_SETUP game_setup, GAME_STATE *game_state)
 {
     MOVE move;
@@ -566,8 +568,8 @@ MOVE get_next_move(GAME_SETUP game_setup, GAME_STATE *game_state)
     if (game_state->current_player == PLAYER1 || game_setup.player_count == 2)
     {
         // Get move
-        // move = get_move_from_user(game_setup, game_state);
-        move = get_best_move(game_state->board, PLAYER1);
+        move = get_move_from_user(game_setup, game_state);
+        // move = get_best_move(game_state->board, PLAYER1);
         move.player = PLAYER1;
         return move;
     }
