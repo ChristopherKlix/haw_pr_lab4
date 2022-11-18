@@ -39,7 +39,7 @@ MOVE get_best_move(BOARD board, PLAYER player)
     };
     int corner = rand() % 4;
     if (total_empty_fields == 9) return corner_moves[corner];
-    
+
 
     int best_eval = INT_MIN;
 
@@ -238,4 +238,125 @@ PLAYER get_opponent(PLAYER player)
     if (player == PLAYER2) return PLAYER1;
     
     return NOPLAYER;
+}
+
+// For minimax
+PLAYER check_for_win_minimax(int **state)
+{
+    int sum = 0;
+
+    // Check rows
+    for (size_t row = 0; row < 3; row++)
+    {
+        sum = 0;
+        for (size_t col = 0; col < 3; col++)
+        {
+            sum += state[row][col];
+        }
+
+        // printf("Row: %i\n", sum);
+
+        if (sum == 3) return PLAYER1;
+        if (sum == (-3)) return PLAYER2;
+    }
+
+    // Check columns
+    for (size_t col = 0; col < 3; col++)
+    {
+        sum = 0;
+        for (size_t row = 0; row < 3; row++)
+        {
+            sum += state[row][col];
+        }
+
+        // printf("Col: %i\n", sum);
+
+        if (sum == 3) return PLAYER1;
+        if (sum == (-3)) return PLAYER2;
+    }
+
+    // Check diagonals
+    sum = 0;
+    for (size_t i = 0; i < 3; i++)
+    {
+        sum += state[i][i];
+    }
+    if (sum == 3) return PLAYER1;
+    if (sum == (-3)) return PLAYER2;
+
+    sum = 0;
+    for (size_t i = 0; i < 3; i++)
+    {
+        sum += state[2-i][i];
+    }
+    if (sum == 3) return PLAYER1;
+    if (sum == (-3)) return PLAYER2;
+
+    return NOPLAYER;
+}
+
+bool check_for_tie_minimax(int **state)
+{
+    // printf("Checking for tie...\n");
+
+    int sum = 0;
+
+    for (size_t row = 0; row < 3; row++)
+    {
+        for (size_t col = 0; col < 3; col++)
+        {
+            int val = pow(state[row][col], 2);
+            sum += val;
+        }
+    }
+
+    if (sum == 9) return true;
+    else return false;
+}
+
+void make_move_minimax(int **state, MOVE move)
+{
+    state[move.x][move.y] = move.player;
+    return;
+}
+
+int evaluate_position(int **state, int depth, PLAYER player)
+{
+    for (size_t i = 0; i < 3; i++)
+    {
+        for (size_t j = 0; j < 3; j++)
+        {
+            int a = state[j][i];
+            char c = (a == (-1)) ? 'O' : 'X';
+            printf("%c", c);
+        }
+        printf("\n");
+    }
+
+    // printf("Eval path\n");
+    int eval = 0;
+    // int depth_punishment = max(0, 1000 - (100 * depth));
+
+    PLAYER winner = check_for_win_minimax(state);
+    printf("Winner: %d\n", winner);
+
+    if (winner == get_opponent(player))
+    {
+        // printf("Player 1 wins\n");
+        eval -= 1000 + (10 * depth);
+        // eval = -10;
+    }
+    else if (winner == player)
+    {
+        // printf("Player 2 wins\n");
+        eval += 1000 - (10 * depth);
+        // eval = 10;
+    }
+
+    return eval;
+}
+
+bool is_valid_move_minimax(int **state, MOVE move)
+{
+    return (state[move.x][move.y] == 0);
 }
