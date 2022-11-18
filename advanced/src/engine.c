@@ -463,6 +463,10 @@ void toggle_player_count(GAME_SETUP *game_setup)
     {
         game_setup->player_count = 2;
     }
+    else if (game_setup->player_count == 2)
+    {
+        game_setup->player_count = 0;
+    }
     else
     {
         game_setup->player_count = 1;
@@ -568,8 +572,15 @@ MOVE get_next_move(GAME_SETUP game_setup, GAME_STATE *game_state)
     if (game_state->current_player == PLAYER1 || game_setup.player_count == 2)
     {
         // Get move
-        move = get_move_from_user(game_setup, game_state);
-        // move = get_best_move(game_state->board, PLAYER1);
+        if (game_setup.player_count == 0)
+        {
+            move = get_best_move(game_state->board, PLAYER1);
+        }
+        else
+        {
+            move = get_move_from_user(game_setup, game_state);
+        }
+
         move.player = PLAYER1;
         return move;
     }
@@ -601,42 +612,6 @@ MOVE get_next_move(GAME_SETUP game_setup, GAME_STATE *game_state)
     }
 }
 
-int evaluate_position(int **state, int depth, PLAYER player)
-{
-    for (size_t i = 0; i < 3; i++)
-    {
-        for (size_t j = 0; j < 3; j++)
-        {
-            int a = state[j][i];
-            char c = (a == (-1)) ? 'O' : 'X';
-            printf("%c", c);
-        }
-        printf("\n");
-    }
-
-    // printf("Eval path\n");
-    int eval = 0;
-    // int depth_punishment = max(0, 1000 - (100 * depth));
-
-    PLAYER winner = check_for_win_minimax(state);
-    printf("Winner: %d\n", winner);
-
-    if (winner == get_opponent(player))
-    {
-        // printf("Player 1 wins\n");
-        eval -= 1000 + (10 * depth);
-        // eval = -10;
-    }
-    else if (winner == player)
-    {
-        // printf("Player 2 wins\n");
-        eval += 1000 - (10 * depth);
-        // eval = 10;
-    }
-
-    return eval;
-}
-
 MOVE get_random_move(GAME_STATE game_state)
 {
     MOVE move;
@@ -653,11 +628,6 @@ MOVE get_random_move(GAME_STATE game_state)
 bool is_valid_move(GAME_STATE game_state, MOVE move)
 {
     return (game_state.board.STATE[move.x][move.y] == 0);
-}
-
-bool is_valid_move_minimax(int **state, MOVE move)
-{
-    return (state[move.x][move.y] == 0);
 }
 
 MOVE get_move_from_user(GAME_SETUP game_setup, GAME_STATE *game_state)
@@ -783,12 +753,6 @@ void make_move(GAME_STATE *game_state, MOVE move)
     return;
 }
 
-void make_move_minimax(int **state, MOVE move)
-{
-    state[move.x][move.y] = move.player;
-    return;
-}
-
 PLAYER check_for_win(GAME_SETUP *game_setup, GAME_STATE *game_state)
 {
     // printf("Checking for win...\n");
@@ -853,80 +817,6 @@ bool check_for_tie(GAME_SETUP *game_setup, GAME_STATE *game_state)
         for (size_t col = 0; col < game_setup->board.WIDTH; col++)
         {
             int val = pow(game_state->board.STATE[row][col], 2);
-            sum += val;
-        }
-    }
-
-    if (sum == 9) return true;
-    else return false;
-}
-
-// For minimax
-PLAYER check_for_win_minimax(int **state)
-{
-    int sum = 0;
-
-    // Check rows
-    for (size_t row = 0; row < 3; row++)
-    {
-        sum = 0;
-        for (size_t col = 0; col < 3; col++)
-        {
-            sum += state[row][col];
-        }
-
-        // printf("Row: %i\n", sum);
-
-        if (sum == 3) return PLAYER1;
-        if (sum == (-3)) return PLAYER2;
-    }
-
-    // Check columns
-    for (size_t col = 0; col < 3; col++)
-    {
-        sum = 0;
-        for (size_t row = 0; row < 3; row++)
-        {
-            sum += state[row][col];
-        }
-
-        // printf("Col: %i\n", sum);
-
-        if (sum == 3) return PLAYER1;
-        if (sum == (-3)) return PLAYER2;
-    }
-
-    // Check diagonals
-    sum = 0;
-    for (size_t i = 0; i < 3; i++)
-    {
-        sum += state[i][i];
-    }
-    if (sum == 3) return PLAYER1;
-    if (sum == (-3)) return PLAYER2;
-
-    sum = 0;
-    for (size_t i = 0; i < 3; i++)
-    {
-        sum += state[2-i][i];
-    }
-    if (sum == 3) return PLAYER1;
-    if (sum == (-3)) return PLAYER2;
-
-    return NOPLAYER;
-}
-
-bool check_for_tie_minimax(int **state)
-{
-    // printf("Checking for tie...\n");
-
-    int sum = 0;
-
-    for (size_t row = 0; row < 3; row++)
-    {
-        for (size_t col = 0; col < 3; col++)
-        {
-            int val = pow(state[row][col], 2);
             sum += val;
         }
     }

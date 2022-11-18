@@ -103,20 +103,12 @@ int start_game(GAME_SETUP*, GAME_STATE*);
 MOVE get_next_move(GAME_SETUP, GAME_STATE*);
 MOVE get_move_from_user(GAME_SETUP, GAME_STATE*);
 MOVE get_random_move(GAME_STATE);
-MOVE get_minimax_move(FIELD, int, bool);
-int evaluate_position(int**, int, PLAYER);
-
 bool is_valid_move(GAME_STATE, MOVE);
-bool is_valid_move_minimax(int**, MOVE);
 
 void make_move(GAME_STATE*, MOVE);
-void make_move_minimax(int**, MOVE);
 
 PLAYER check_for_win(GAME_SETUP*, GAME_STATE*);
 bool check_for_tie(GAME_SETUP*, GAME_STATE*);
-
-PLAYER check_for_win_minimax(int**);
-bool check_for_tie_minimax(int**);
 
 MAIN_MENU_SELECTION main_menu(GAME_SETUP*, GAME_STATE*);
 OPTIONS_MENU_SELECTION options_menu(GAME_SETUP*, GAME_STATE*);
